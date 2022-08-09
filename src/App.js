@@ -7,6 +7,7 @@ import DisplayBalance from './components/DisplayBalance';
 import DisplayBalances from './components/DisplayBalances';
 import EntryLines from './components/EntryLines';
 import ModalEdit from './components/ModalEdit';
+import { createStore, combineReducers } from 'redux';
 
 function App() {
   const [entries, setEntries] = useState(initialEntries);
@@ -45,6 +46,51 @@ function App() {
     setIncomeTotal(totalIncome);
     setExpenseTotal(totalExpense);
   }, [entries])
+
+/////////////////////////////////////////////////////////////////
+  function entriesReducer(state = initialEntries, action) {
+    let newState;
+    switch (action.type) {
+      case 'ADD_ENTRY':
+        newState = state.concat({...action.payload});
+        return newState;
+
+      case 'DELETE_ENTRY':
+        newState = state.filter(entry => 
+          entry.id !== action.payload.id);
+        return newState;
+
+      default:
+        return state;
+    }
+  };
+
+  const combinedReducers = combineReducers({
+    entries: entriesReducer,
+  });
+  const store = createStore(combinedReducers);
+  store.subscribe(() => {
+    console.log('before', store.getState());
+  });
+  
+  const payload_add = {
+    id: 5,
+    description: "Powerrrrrrr",
+    value: 300,
+    isExpense: false
+  };
+
+  function addEntryRedux(payload){
+    return { type: 'ADD_ENTRY', payload };
+  }
+
+  function removeEntryRedux(id){
+    return { type: 'DELETE_ENTRY', payload: { id } }
+  }
+
+  store.dispatch(addEntryRedux(payload_add));
+  store.dispatch(removeEntryRedux(2));
+////////////////////////////////////////////////////////////////////
 
   const deleteEntry = id => {
     const result = entries.filter(entry => entry.id !== id);
