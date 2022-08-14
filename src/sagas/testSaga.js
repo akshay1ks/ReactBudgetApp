@@ -5,7 +5,7 @@ function double(number){
 }
 
 export function* testSaga(){
-    while (true) {
+    while (false) {
         console.log("starting saga"); 
         const state = yield take('TAKE_MASSAGE');
         const a = yield call(double, 2);
@@ -17,7 +17,7 @@ export function* testSaga(){
 }
 
 export function* dispatchTest(){
-    while(true){
+    while(false){
         yield delay(1000);
         yield put({ type: 'TAKE_MASSAGE', payload: 1000 });
     }
