@@ -6,6 +6,7 @@ import { openEditModal } from '../actions/modals.actions';
 
 function EntryLine({ id, description, value, isExpense = false }) {
   const dispatch = useDispatch();
+  dispatch({ type: 'TAKE_MASSAGE' });
   return(
     <Fragment>
       <Segment color={isExpense ? 'red' : 'green'}>
